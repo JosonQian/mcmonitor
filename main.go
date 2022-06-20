@@ -68,10 +68,12 @@ func mcInit() {
 	var chunk []byte
 	//Write 'Hello World' to the stream.
 	_, err = conn.Write([]byte("stats slabs"))
+	fmt.Println("write stats slabs")
 	if err != nil {
 		panic("Unable to write from stream.")
 	}
 	for {
+		fmt.Println("start read")
 		n, err := conn.Read(buf)
 		fmt.Println(n, buf[:n])
 		if err != nil {
@@ -81,6 +83,7 @@ func mcInit() {
 			break
 		}
 		chunk = append(chunk, buf[:n]...)
+		fmt.Println(chunk)
 	}
 	//return string(chunk)
 	fmt.Println(string(chunk))
