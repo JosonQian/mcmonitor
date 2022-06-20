@@ -1,0 +1,2 @@
+# mcmonitor
+memcache monitor info 
