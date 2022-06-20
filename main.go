@@ -72,19 +72,22 @@ func mcInit() {
 	if err != nil {
 		panic("Unable to write from stream.")
 	}
-	for {
-		fmt.Println("start read")
-		n, err := conn.Read(buf)
-		fmt.Println(n, buf[:n])
-		if err != nil {
-			fmt.Println(err.Error())
-		}
-		if n == 0 {
-			break
-		}
-		chunk = append(chunk, buf[:n]...)
-		fmt.Println(chunk)
-	}
+	var n int
+	n, _ = conn.Read(buf)
+	fmt.Println(n)
+	//for {
+	//	fmt.Println("start read")
+	//	n, err := conn.Read(buf)
+	//	fmt.Println(n, buf[:n])
+	//	if err != nil {
+	//		fmt.Println(err.Error())
+	//	}
+	//	if n == 0 {
+	//		break
+	//	}
+	//	chunk = append(chunk, buf[:n]...)
+	//	fmt.Println(chunk)
+	//}
 	//return string(chunk)
 	fmt.Println(string(chunk))
 
