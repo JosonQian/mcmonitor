@@ -24,6 +24,7 @@ func GetMcSlabs() {
 	}
 	fmt.Println("output", string(out))
 	slice := strings.Split(string(out), string('\n'))
+	fmt.Println(slice)
 	for _, v := range slice {
 		if findPage := strings.Contains(v, "total_pages"); findPage {
 			fmt.Println(v)
