@@ -27,18 +27,18 @@ func GetMcSlabs() {
 
 	for _, v := range slice {
 		if findPage := strings.Contains(v, "total_pages"); findPage {
-			fmt.Println(v)
+			//fmt.Println(v)
 			stp, _ := strconv.Atoi(strings.Split(v, " ")[1])
 			pagesCount = stp + pagesCount
 
 		}
 		if findChunk := strings.Contains(v, "total_chunks"); findChunk {
-			fmt.Println(v)
+			//fmt.Println(v)
 			stc, _ := strconv.Atoi(strings.Split(v, " ")[1])
 			chunkCount = stc + chunkCount
 		}
 		if findFree := strings.Contains(v, "free_chunks"); findFree {
-			fmt.Println(v)
+			//fmt.Println(v)
 			stf, _ := strconv.Atoi(strings.Split(v, " ")[1])
 			freeChunk = stf + freeChunk
 		}
@@ -80,7 +80,7 @@ func Exporter() {
 	}
 	useChunk = chunkCount - freeChunk
 	fmt.Println()
-	gaugeTotalPages.Set(float64(useChunk))
+	gaugeUseChunks.Set(float64(useChunk))
 
 	//get free chunks
 	gaugeFreeChunks := prometheus.NewGauge(prometheus.GaugeOpts{ // 定义指标
@@ -90,7 +90,7 @@ func Exporter() {
 	if err := prometheus.Register(gaugeFreeChunks); err != nil {
 		log.Fatal(err)
 	}
-	gaugeTotalPages.Set(float64(freeChunk))
+	gaugeFreeChunks.Set(float64(freeChunk))
 
 }
 func main() {
