@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-var pagesCount, chunk_count, use_chunk, free_chunk int
+var pagesCount, chunkCount, useChunk, freeChunk int
 
 func GetMcSlabs() {
 	var cmd *exec.Cmd
@@ -35,15 +35,15 @@ func GetMcSlabs() {
 		if findChunk := strings.Contains(v, "total_chunks"); findChunk {
 			fmt.Println(v)
 			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
-			chunk_count += sti
+			chunkCount += sti
 		}
 		if findFree := strings.Contains(v, "free_chunks"); findFree {
 			fmt.Println(v)
 			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
-			free_chunk += sti
+			freeChunk += sti
 		}
-		use_chunk = chunk_count - free_chunk
-		fmt.Println(pagesCount, chunk_count, use_chunk, free_chunk)
+		useChunk = chunkCount - freeChunk
+		fmt.Println(pagesCount, chunkCount, useChunk, freeChunk)
 	}
 }
 
@@ -66,7 +66,7 @@ func Exporter() {
 	if err := prometheus.Register(gaugeTotalChunks); err != nil {
 		log.Fatal(err)
 	}
-	gaugeTotalChunks.Set(float64(chunk_count))
+	gaugeTotalChunks.Set(float64(chunkCount))
 
 	//get use chunks
 	gaugeUseChunks := prometheus.NewGauge(prometheus.GaugeOpts{ // 定义指标
@@ -76,8 +76,8 @@ func Exporter() {
 	if err := prometheus.Register(gaugeUseChunks); err != nil {
 		log.Fatal(err)
 	}
-	use_chunk = chunk_count - free_chunk
-	gaugeTotalPages.Set(float64(use_chunk))
+	useChunk = chunkCount - freeChunk
+	gaugeTotalPages.Set(float64(useChunk))
 
 	//get free chunks
 	gaugeFreeChunks := prometheus.NewGauge(prometheus.GaugeOpts{ // 定义指标
@@ -87,7 +87,7 @@ func Exporter() {
 	if err := prometheus.Register(gaugeFreeChunks); err != nil {
 		log.Fatal(err)
 	}
-	gaugeTotalPages.Set(float64(free_chunk))
+	gaugeTotalPages.Set(float64(freeChunk))
 
 }
 func main() {
