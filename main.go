@@ -25,18 +25,18 @@ func GetMcSlabs() {
 	fmt.Println("output", string(out))
 	slice := strings.Split(string(out), string('\n'))
 	for _, v := range slice {
-		if findPage := strings.Contains(v, "a"); findPage {
+		if findPage := strings.Contains(v, "total_pages"); findPage {
 			fmt.Println(v)
 			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
 			pages_count += sti
 
 		}
-		if findChunk := strings.Contains(v, "b"); findChunk {
+		if findChunk := strings.Contains(v, "total_chunks"); findChunk {
 			fmt.Println(v)
 			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
 			chunk_count += sti
 		}
-		if findFree := strings.Contains(v, "b"); findFree {
+		if findFree := strings.Contains(v, "free_chunks"); findFree {
 			fmt.Println(v)
 			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
 			free_chunk += sti
@@ -94,5 +94,5 @@ func main() {
 	Exporter()
 
 	http.Handle("/metrics", promhttp.Handler()) // 服务！
-	log.Fatal(http.ListenAndServe("0.0.0.0:9109", nil))
+	log.Fatal(http.ListenAndServe("0.0.0.0:8080", nil))
 }
