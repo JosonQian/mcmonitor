@@ -35,15 +35,15 @@ func GetMcSlabs() {
 		if findChunk := strings.Contains(v, "total_chunks"); findChunk {
 			fmt.Println(v)
 			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
-			chunkCount += sti
+			chunkCount = sti + chunkCount
 		}
 		if findFree := strings.Contains(v, "free_chunks"); findFree {
 			fmt.Println(v)
 			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
-			freeChunk += sti
+			freeChunk = sti + freeChunk
 		}
 		useChunk = chunkCount - freeChunk
-		fmt.Println(pagesCount, chunkCount, useChunk, freeChunk)
+
 	}
 }
 
@@ -56,6 +56,7 @@ func Exporter() {
 	if err := prometheus.Register(gaugeTotalPages); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(pagesCount, float64(pagesCount))
 	gaugeTotalPages.Set(float64(pagesCount))
 
 	//get total chunks
@@ -66,6 +67,7 @@ func Exporter() {
 	if err := prometheus.Register(gaugeTotalChunks); err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(chunkCount, float64(chunkCount))
 	gaugeTotalChunks.Set(float64(chunkCount))
 
 	//get use chunks
@@ -77,6 +79,7 @@ func Exporter() {
 		log.Fatal(err)
 	}
 	useChunk = chunkCount - freeChunk
+	fmt.Println()
 	gaugeTotalPages.Set(float64(useChunk))
 
 	//get free chunks
