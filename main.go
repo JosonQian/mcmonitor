@@ -7,11 +7,10 @@ import (
 	"log"
 	"net/http"
 	"os/exec"
-	"strconv"
 	"strings"
 )
 
-var pages_count, chunk_count, use_chunk, free_chunk int
+var pagesCount, chunk_count, use_chunk, free_chunk int
 
 func GetMcSlabs() {
 	var cmd *exec.Cmd
@@ -25,26 +24,32 @@ func GetMcSlabs() {
 	fmt.Println("output", string(out))
 	slice := strings.Split(string(out), string('\n'))
 	fmt.Println(slice)
-	for _, v := range slice {
-		if findPage := strings.Contains(v, "total_pages"); findPage {
-			fmt.Println(v)
-			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
-			pages_count += sti
-
-		}
-		if findChunk := strings.Contains(v, "total_chunks"); findChunk {
-			fmt.Println(v)
-			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
-			chunk_count += sti
-		}
-		if findFree := strings.Contains(v, "free_chunks"); findFree {
-			fmt.Println(v)
-			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
-			free_chunk += sti
-		}
-		use_chunk = chunk_count - free_chunk
-		fmt.Println(pages_count, chunk_count, use_chunk, free_chunk)
+	for k := range slice {
+		fmt.Println(k)
 	}
+	for k := range string(out) {
+		fmt.Println(k)
+	}
+	//for _, v := range slice {
+	//	if findPage := strings.Contains(v, "total_pages"); findPage {
+	//		fmt.Println(v)
+	//		sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
+	//		pagesCount = sti+pagesCount
+	//
+	//	}
+	//	if findChunk := strings.Contains(v, "total_chunks"); findChunk {
+	//		fmt.Println(v)
+	//		sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
+	//		chunk_count += sti
+	//	}
+	//	if findFree := strings.Contains(v, "free_chunks"); findFree {
+	//		fmt.Println(v)
+	//		sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
+	//		free_chunk += sti
+	//	}
+	//	use_chunk = chunk_count - free_chunk
+	//	fmt.Println(pagesCount, chunk_count, use_chunk, free_chunk)
+	//}
 }
 
 func Exporter() {
@@ -56,7 +61,7 @@ func Exporter() {
 	if err := prometheus.Register(gaugeTotalPages); err != nil {
 		log.Fatal(err)
 	}
-	gaugeTotalPages.Set(float64(pages_count))
+	gaugeTotalPages.Set(float64(pagesCount))
 
 	//get total chunks
 	gaugeTotalChunks := prometheus.NewGauge(prometheus.GaugeOpts{ // 定义指标
