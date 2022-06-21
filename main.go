@@ -28,19 +28,19 @@ func GetMcSlabs() {
 	for _, v := range slice {
 		if findPage := strings.Contains(v, "total_pages"); findPage {
 			fmt.Println(v)
-			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
-			pagesCount = sti + pagesCount
+			stp, _ := strconv.Atoi(strings.Split(v, " ")[1])
+			pagesCount = stp + pagesCount
 
 		}
 		if findChunk := strings.Contains(v, "total_chunks"); findChunk {
 			fmt.Println(v)
-			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
-			chunkCount = sti + chunkCount
+			stc, _ := strconv.Atoi(strings.Split(v, " ")[1])
+			chunkCount = stc + chunkCount
 		}
 		if findFree := strings.Contains(v, "free_chunks"); findFree {
 			fmt.Println(v)
-			sti, _ := strconv.Atoi(strings.Split(v, " ")[1])
-			freeChunk = sti + freeChunk
+			stf, _ := strconv.Atoi(strings.Split(v, " ")[1])
+			freeChunk = stf + freeChunk
 		}
 		useChunk = chunkCount - freeChunk
 
